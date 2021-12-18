@@ -2,7 +2,7 @@
 // This is an interactive program that don't take argument.
 // The database is kept in the local file pessoas.db
 // If the file pessoas.db has permissions 2** then it is emptied.
-// Written by: Pedro Izecksohn on 18-December-2021 17:35
+// Written by: Pedro Izecksohn on 18-December-2021 18:01
 // License: 1) This program is free to be distributed in source code.
 //          2) No warranty is given.
 
@@ -49,7 +49,7 @@ int main()
     Pessoa *nova = malloc (sizeof (Pessoa));
     if (NULL == nova)
     {
-      printf ("malloc retornou NULL");
+      fprintf (stderr, "malloc retornou NULL");
       return EXIT_FAILURE;
     }
     if (fgets (nova->nome,NOMELEN,file) == NULL)
@@ -107,7 +107,7 @@ int main()
       printf ("Digite o nome:");
       if (NULL==fgets(nova->nome,NOMELEN,stdin))    
       {
-        printf ("fgets retornou NULL.\n");
+        fprintf (stderr, "fgets retornou NULL.\n");
         break;
       }
       char *pc = index (nova->nome,'\n');
@@ -118,7 +118,7 @@ int main()
       printf ("Digite a idade:");    
       if (0 == scanf ("%hu",&nova->idade))
       {
-       printf("Você não digitou a idade.\n");
+       fprintf (stderr, "Você não digitou a idade.\n");
        continue;
       }
       getchar();
@@ -135,11 +135,12 @@ int main()
         fprintf (stderr, "fprintf falhou em escrever em pessoas.db .\n");
         return EXIT_FAILURE;
       }
-     if (EOF == fclose(file))
-     {
-       fprintf (stderr, "fclose deu erro após inserir uma pessoa.\n");
-       return EXIT_FAILURE;
-     }
+      if (EOF == fclose(file))
+      {
+        fprintf (stderr, "fclose deu erro após inserir uma pessoa.\n");
+        return EXIT_FAILURE;
+      }
+      printf ("Pessoa inserida.\n");
     }
     else if (resposta == 'p')
     {
@@ -152,7 +153,7 @@ int main()
         printf ("Digite o nome:");
         if (NULL==fgets (nome, NOMELEN, stdin))
         {
-          printf ("fgets retornou NULL.\n");
+          fprintf (stderr, "fgets retornou NULL.\n");
           return EXIT_FAILURE;
         }
         char *pc = index (nome,'\n');
@@ -198,7 +199,7 @@ int main()
         }
         printf ("Encontrei %lu resultados.\n",n);
       }
-      else printf ("O caractere %c não é reconhecido.\n",resposta);
+      else fprintf (stderr, "O caractere %c não é reconhecido.\n",resposta);
     }
     else if (resposta == 'd')
     {
@@ -208,7 +209,7 @@ int main()
       printf ("Digite o nome:");
       if (NULL==fgets (nome, NOMELEN, stdin))
       {
-        printf ("fgets retornou NULL.\n");
+        fprintf (stderr, "fgets retornou NULL.\n");
         return EXIT_FAILURE;
       }
       char *pc = index (nome,'\n');
@@ -277,7 +278,7 @@ int main()
     }
     else 
     {
-      printf ("O caractere %c não é reconhecido.\n",resposta);
+      fprintf (stderr, "O caractere %c não é reconhecido.\n",resposta);
     }
   }
   return EXIT_SUCCESS;
