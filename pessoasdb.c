@@ -1,13 +1,13 @@
 // pessoasdb.c - Manages a local database of people names and ages.
 // This is an interactive program that don't take argument.
 // The database is kept in the local file pessoas.db
-// If the file pessoas.db has permissions 2** then it is emptied.
-// Written by: Pedro Izecksohn on 18-December-2021 18:01
+// Written by: Pedro Izecksohn on 22-December-2021 18:08
 // License: 1) This program is free to be distributed in source code.
 //          2) No warranty is given.
 
 #define _GNU_SOURCE
 #include <assert.h>
+#include <errno.h>
 #include <stdio.h> 
 #include <stdlib.h>
 #include <string.h>
@@ -26,9 +26,14 @@ int main()
   FILE *file;
   if ((file=fopen("pessoas.db", "rb"))==NULL)
   {
+    if (errno!=ENOENT)
+    {
+      perror ("fopen pessoas.db rb");
+      return EXIT_FAILURE;
+    }
     if ((file=fopen ("pessoas.db", "wb"))==NULL)
     {
-      fprintf (stderr, "O arquivo pessoas.db não pode ser lido nem escrito.\n");
+      fprintf (stderr, "O arquivo pessoas.db não pode ser criado.\n");
       return EXIT_FAILURE;
     }
     fclose (file);
